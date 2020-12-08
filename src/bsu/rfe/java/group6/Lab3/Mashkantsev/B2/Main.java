@@ -26,7 +26,7 @@ public class Main {
         }
         i = 0;
         try{
-            DataOutputStream out = new DataOutputStream(new FileOutputStream("Data1.bin"));
+            DataOutputStream out = new DataOutputStream(new FileOutputStream("Data1.txt"));
 
             for (i = 0;i < arguments.length;i++){
                 out.writeDouble(arguments[i]);

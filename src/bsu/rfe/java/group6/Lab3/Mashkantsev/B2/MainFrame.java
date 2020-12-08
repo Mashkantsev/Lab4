@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
     private JFileChooser fileChooser= null;
     private JCheckBoxMenuItem showAxisMenuItem;
     private JCheckBoxMenuItem showMarkersMenuItem;
-   // private JCheckBoxMenuItem showSegmentationMenuItem;
+    private JCheckBoxMenuItem showSegmentationMenuItem;
     private GraphicDisplay display= new GraphicDisplay();
     private boolean fileLoaded= false;
     public MainFrame(){
@@ -85,15 +85,15 @@ public class MainFrame extends JFrame {
         graphicsMenu.add(showMarkersMenuItem);
         // Элемент по умолчанию выключен
         showMarkersMenuItem.setSelected(true);
-        Action  showSegmentation = new AbstractAction("Показать сетку") {
+        Action  showSegmentation = new AbstractAction("Показать деления") {
             @Override
             public void actionPerformed(ActionEvent e) {
-          //      display.setShowSegmentation(showSegmentationMenuItem.isSelected());
+                display.setShowSegmentation(showSegmentationMenuItem.isSelected());
             }
         };
-     //   showSegmentationMenuItem = new JCheckBoxMenuItem(showSegmentation);
-       // graphicsMenu.add(showSegmentationMenuItem);
-       // showSegmentationMenuItem.setSelected(true);
+        showSegmentationMenuItem = new JCheckBoxMenuItem(showSegmentation);
+        graphicsMenu.add(showSegmentationMenuItem);
+        showSegmentationMenuItem.setSelected(true);
 
         // Зарегистрировать обработчик событий, связанных с меню"График"
         graphicsMenu.addMenuListener(new GraphicsMenuListener());
@@ -155,7 +155,7 @@ public class MainFrame extends JFrame {
             // Доступность или недоступность элементов меню "График" определяется загруженностью данных
             showAxisMenuItem.setEnabled(fileLoaded);
             showMarkersMenuItem.setEnabled(fileLoaded);
-            //showSegmentationMenuItem.setEnabled(fileLoaded);
+            showSegmentationMenuItem.setEnabled(fileLoaded);
         }
         // Обработчик, вызываемый после того, как меню исчезло с экрана
         public void menuDeselected(MenuEvent e) {}

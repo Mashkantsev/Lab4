@@ -24,7 +24,7 @@ public class GraphicDisplay extends JPanel {
     // Флаговые переменные, задающие правила отображения графика
     private boolean showAxis= true;
     private boolean showMarkers= true;
-    //private boolean showSegmentation = true;
+    private boolean showSegmentation = true;
     // Границы диапазона пространства, подлежащего отображению
     private double minX;
     private double maxX;
@@ -72,10 +72,10 @@ public class GraphicDisplay extends JPanel {
         this.showMarkers= showMarkers;
         repaint();
     }
-   /* public void setShowSegmentation(boolean showSegmentation){
+    public void setShowSegmentation(boolean showSegmentation){
         this.showSegmentation = showSegmentation;
         repaint();
-    }*/
+    }
     protected Point2D.Double xyToPoint(double x, double y){
         // Вычисляем смещение X от самой левой точки (minX)
         double deltaX= x-minX;
@@ -115,17 +115,22 @@ public class GraphicDisplay extends JPanel {
         // Отобразить график
         canvas.draw(graphics);
     }
-   /* protected void paintSegmentation(Graphics2D canvas){
+    protected void paintSegmentation(Graphics2D canvas){
         canvas.setStroke(SegmentationStroke);
         canvas.setColor(Color.GRAY);
         GeneralPath path = new GeneralPath();
-        double shagX = getSize().getWidth()/10;
-        double shagY = getSize().getHeight()/10;
-        for(int i = 0;i < 10;i++) {
-            canvas.drawLine(0, (int)(i*shagY), (int)getSize().getWidth(), (int)(i*shagY)); // Горизонтали
-            canvas.drawLine((int)(i*shagX), 0,(int)(i*shagX),(int)getSize().getHeight() ); // Вертикали
+        double shagX = getSize().getWidth()/100;
+        double shagY = getSize().getHeight()/100;
+        for(int i = 0;i < 100;i++) {
+            if(i%5!=0){
+                canvas.drawLine((int)((maxX-minX)/2), (int)(i*shagY), (int)(shagX+(maxX-minX)/2), (int)(i*shagY)); // Горизонтали
+              //  canvas.drawLine((int)(i*shagX), (int)maxY,(int)(i*shagX),(int)(maxY+shagY) ); // Вертикали
+        }else{
+                canvas.drawLine((int)((maxX-minX)/2), (int)(i*shagY),(int)(shagX*3+(maxX-minX)/2) , (int)(i*shagY)); // Горизонтали
+               // canvas.drawLine((int)(i*shagX), (int)maxY,(int)(i*shagX),(int)(maxY+shagY*3) ); // Вертикали
+            }
         }
-    }*/
+    }
 
     protected void paintAxis(Graphics2D canvas) {
         // Шаг 1 –установить необходимые настройки рисования
@@ -219,14 +224,13 @@ public class GraphicDisplay extends JPanel {
             GeneralPath path = new GeneralPath();
             // Центр -в точке (x,y)
             Point2D.Double center = xyToPoint(point[0], point[1]);
-            // Угол прямоугольника -отстоит на расстоянии (3,3)
             canvas.draw(new Line2D.Double(shiftPoint(center, -11, -11), shiftPoint(center, 11, -11)));
             canvas.draw(new Line2D.Double(shiftPoint(center, 11, -11), shiftPoint(center, 11, 11)));
             canvas.draw(new Line2D.Double(shiftPoint(center, 11, 11), shiftPoint(center, -11, -11)));
             canvas.draw(new Line2D.Double(shiftPoint(center, -11, 11), shiftPoint(center, 11, -11)));
             canvas.draw(new Line2D.Double(shiftPoint(center, 11, 11), shiftPoint(center, -11, 11)));
             canvas.draw(new Line2D.Double(shiftPoint(center, -11, 11), shiftPoint(center, -11, -11)));
-            // Point2D.Double corner = shiftPoint(center, 3, 3);
+            Point2D.Double corner = shiftPoint(center, 3, 3);
 
         }
     }
@@ -290,7 +294,7 @@ public class GraphicDisplay extends JPanel {
         // затираться последующим
         // Первым (если нужно) отрисовываются оси координат.
         if(showAxis) paintAxis(canvas);
-       // if(showSegmentation) paintSegmentation(canvas);
+        if(showSegmentation) paintSegmentation(canvas);
         // Затем отображаетсясам график
         paintGraphics(canvas);
         // Затем (если нужно) отображаются маркеры точек графика.
