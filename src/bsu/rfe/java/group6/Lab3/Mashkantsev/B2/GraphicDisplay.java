@@ -210,7 +210,14 @@ public class GraphicDisplay extends JPanel {
             GeneralPath path = new GeneralPath();
             // Центр -в точке (x,y)
             Point2D.Double center = xyToPoint(point[0], point[1]);
-
+            // Угол прямоугольника -отстоит на расстоянии (3,3)
+            canvas.draw(new Line2D.Double(shiftPoint(center, -11, -11), shiftPoint(center, 11, -11)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, 11, -11), shiftPoint(center, 11, 11)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, 11, 11), shiftPoint(center, -11, -11)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, -11, 11), shiftPoint(center, 11, -11)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, 11, 11), shiftPoint(center, -11, 11)));
+            canvas.draw(new Line2D.Double(shiftPoint(center, -11, 11), shiftPoint(center, -11, -11)));
+            // Point2D.Double corner = shiftPoint(center, 3, 3);
 
         }
     }
