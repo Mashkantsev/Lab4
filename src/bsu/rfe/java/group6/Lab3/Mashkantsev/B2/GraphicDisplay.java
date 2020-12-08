@@ -202,10 +202,19 @@ public class GraphicDisplay extends JPanel {
 
     protected void paintMarkers(Graphics2D canvas){
         for(Double[] point: graphicsData){
-            Double temp = Math.abs(point[1]); // Класс Double
-            String str = temp.toString();
-            str.replace(".","");
-            str.replace(",","");
+            boolean flag = true;
+            if (point[1]%1 > 0.1) {
+                flag = false;
+                break;
+            }
+            if (!flag) {
+                canvas.setColor(Color.RED);
+                canvas.setPaint(Color.RED);
+            }
+            else {
+                canvas.setColor(Color.BLUE);
+                canvas.setPaint(Color.BLUE);
+            }
             canvas.setStroke(markerStroke);
             GeneralPath path = new GeneralPath();
             // Центр -в точке (x,y)
