@@ -124,10 +124,10 @@ public class GraphicDisplay extends JPanel {
         for(int i = 0;i < 100;i++) {
             if(i%5!=0){
                 canvas.drawLine((int)((-minX)*scale), (int)(i*shagY), (int)(shagX+(-minX)*scale), (int)(i*shagY)); // Горизонтали
-                canvas.drawLine((int)(i*shagX), (int)(maxY*scale+shagY),(int)(i*shagX),(int)(maxY*scale) ); // Вертикали
+                canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY),(int)(i*shagX),(int)(maxY*scale) ); // Вертикали
         }else{
                 canvas.drawLine((int)((-minX)*scale), (int)(i*shagY),(int)(shagX*3+(-minX)*scale) , (int)(i*shagY)); // Горизонтали
-                canvas.drawLine((int)(i*shagX), (int)(maxY*scale+shagY*3),(int)(i*shagX),(int)(maxY*scale+shagY) ); // Вертикали
+                canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY*3),(int)(i*shagX),(int)(maxY*scale) ); // Вертикали
             }
         }
     }
