@@ -17,6 +17,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 import java.awt.geom.*;
 
+
 @SuppressWarnings("serial")
 public class GraphicDisplay extends JPanel {
     // Список координат точек для построения графика
@@ -45,7 +46,7 @@ public class GraphicDisplay extends JPanel {
         setBackground(Color.WHITE);
         // Сконструировать необходимые объекты, используемые в рисовании
         // Перо для рисования графика
-        graphicsStroke= new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 10.0f, new float[] {4,1,2,1,4}, 0.0f);
+        graphicsStroke= new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 10.0f, new float[] {12,3,6,3,12}, 0.0f);
         // Перо для рисования осей координат
         axisStroke= new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
         // Перо для рисования контуров маркеров
@@ -122,32 +123,41 @@ public class GraphicDisplay extends JPanel {
         double shagX = getSize().getWidth()/100;
         double shagY = getSize().getHeight()/100;
         double i;
-        for( i = maxY*scale/shagY;100-i > 0.000000001;i++) {
-            if((i-maxY*scale/shagY)%5>0.000001){
+        int temp;
+        for( temp = 0 , i = maxY*scale/shagY;100-i > 0.000000001;i++) {
+            if(temp!=5){
                 canvas.drawLine((int)((-minX)*scale), (int)(i*shagY), (int)(shagX+(-minX)*scale), (int)(i*shagY)); // y-
+                temp++;
         }else{
                 canvas.drawLine((int)((-minX)*scale), (int)(i*shagY),(int)(shagX*3+(-minX)*scale) , (int)(i*shagY)); // y-
+                temp=0;
             }
         }
-        for( i = maxY*scale/shagY;i>0;i--) {
-            if((-i+maxY*scale/shagY)%5>0.000001){
+        for(temp = 0 , i = maxY*scale/shagY;i>0;i--) {
+            if(temp!=5){
                 canvas.drawLine((int)((-minX)*scale), (int)(i*shagY), (int)(shagX+(-minX)*scale), (int)(i*shagY)); // y+
+                temp++;
             }else{
                 canvas.drawLine((int)((-minX)*scale), (int)(i*shagY),(int)(shagX*3+(-minX)*scale) , (int)(i*shagY)); // y+
+                temp=0;
             }
         }
-        for( i = -minX*scale/shagX;100 - i > 0.0000000001;i++) {
-            if((i+minX*scale/shagX)%5>0.000001){
+        for( temp = 0 ,i = -minX*scale/shagX;100 - i > 0.0000000001;i++) {
+            if(temp!=5){
                 canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY),(int)(i*shagX),(int)(maxY*scale) ); // x+
+                temp++;
             }else{
                 canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY*3),(int)(i*shagX),(int)(maxY*scale) ); // x+
+                temp=0;
             }
         }
-        for(  i = -minX*scale/shagX; i > 0 ;i--) {
-            if((-i-minX*scale/shagX)%5>0.000001){
+        for( temp = 0 , i = -minX*scale/shagX; i > 0 ;i--) {
+            if(temp!=5){
                 canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY),(int)(i*shagX),(int)(maxY*scale) ); // x-
+                temp++;
             }else{
                 canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY*3),(int)(i*shagX),(int)(maxY*scale) ); // x-
+                temp=0;
             }
         }
     }
@@ -220,16 +230,20 @@ public class GraphicDisplay extends JPanel {
 
 
         }
+        Rectangle2D bounds = axisFont.getStringBounds("0", context);
+        Point2D.Double labelPos = xyToPoint(0,0);
+        canvas.drawString("0",(float)(labelPos.getX()-bounds.getX()),(float)(labelPos.getY()-bounds.getY()));
     }
 
     protected void paintMarkers(Graphics2D canvas){
         for(Double[] point: graphicsData){
-            boolean flag = true;
-            if (point[1]%1 > 0.1) {
+            boolean flag;
+            if (point[1]%1.0 <0.1 || point[1]%1.0 > 0.9) {
+                flag = true;
+            }else{
                 flag = false;
-                break;
             }
-            if (!flag) {
+            if (flag) {
                 canvas.setColor(Color.RED);
                 canvas.setPaint(Color.RED);
             }
