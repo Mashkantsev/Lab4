@@ -121,13 +121,33 @@ public class GraphicDisplay extends JPanel {
         GeneralPath path = new GeneralPath();
         double shagX = getSize().getWidth()/100;
         double shagY = getSize().getHeight()/100;
-        for(int i = 0;i < 100;i++) {
-            if(i%5!=0){
-                canvas.drawLine((int)((-minX)*scale), (int)(i*shagY), (int)(shagX+(-minX)*scale), (int)(i*shagY)); // Горизонтали
-                canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY),(int)(i*shagX),(int)(maxY*scale) ); // Вертикали
+        double i;
+        for( i = maxY*scale/shagY;100-i > 0.000000001;i++) {
+            if((i-maxY*scale/shagY)%5>0.000001){
+                canvas.drawLine((int)((-minX)*scale), (int)(i*shagY), (int)(shagX+(-minX)*scale), (int)(i*shagY)); // y-
         }else{
-                canvas.drawLine((int)((-minX)*scale), (int)(i*shagY),(int)(shagX*3+(-minX)*scale) , (int)(i*shagY)); // Горизонтали
-                canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY*3),(int)(i*shagX),(int)(maxY*scale) ); // Вертикали
+                canvas.drawLine((int)((-minX)*scale), (int)(i*shagY),(int)(shagX*3+(-minX)*scale) , (int)(i*shagY)); // y-
+            }
+        }
+        for( i = maxY*scale/shagY;i>0;i--) {
+            if((-i+maxY*scale/shagY)%5>0.000001){
+                canvas.drawLine((int)((-minX)*scale), (int)(i*shagY), (int)(shagX+(-minX)*scale), (int)(i*shagY)); // y+
+            }else{
+                canvas.drawLine((int)((-minX)*scale), (int)(i*shagY),(int)(shagX*3+(-minX)*scale) , (int)(i*shagY)); // y+
+            }
+        }
+        for( i = -minX*scale/shagX;100 - i > 0.0000000001;i++) {
+            if((i+minX*scale/shagX)%5>0.000001){
+                canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY),(int)(i*shagX),(int)(maxY*scale) ); // x+
+            }else{
+                canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY*3),(int)(i*shagX),(int)(maxY*scale) ); // x+
+            }
+        }
+        for(  i = -minX*scale/shagX; i > 0 ;i--) {
+            if((-i-minX*scale/shagX)%5>0.000001){
+                canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY),(int)(i*shagX),(int)(maxY*scale) ); // x-
+            }else{
+                canvas.drawLine((int)(i*shagX), (int)(maxY*scale-shagY*3),(int)(i*shagX),(int)(maxY*scale) ); // x-
             }
         }
     }
@@ -200,9 +220,6 @@ public class GraphicDisplay extends JPanel {
 
 
         }
-        Rectangle2D bounds = axisFont.getStringBounds("0", context);
-        Point2D.Double labelPos = xyToPoint(0,0);
-        canvas.drawString("0",(float)(labelPos.getX()-bounds.getX()),(float)(labelPos.getY()-bounds.getY()));
     }
 
     protected void paintMarkers(Graphics2D canvas){
